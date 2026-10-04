@@ -1,0 +1,27 @@
+name: Build Hermes Desktop Light
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout Hermes
+        uses: actions/checkout@v4
+        with:
+          repository: NousResearch/hermes-agent
+          fetch-depth: 1
+
+      - name: Build Hermes Desktop Light
+        run: |
+          python3 scripts/bundles/desktop.py --tag light-local --variant light
+
+      - name: Upload finished Mac app
+        uses: actions/upload-artifact@v4
+        with:
+          name: Hermes-Desktop-Light-macOS
+          path: |
+            apps/desktop/release/*.dmg
+            apps/desktop/release/*.zip
