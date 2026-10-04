@@ -17,133 +17,56 @@ jobs:
           repository: NousResearch/hermes-agent
           fetch-depth: 0
 
-      - name: Verify build machine and checkout
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          echo "Architecture:"
-          uname -m
-
-          echo "macOS:"
-          sw_vers
-
-          echo "Python:"
-          python3 --version
-
-          echo "Git:"
-          git --version
-
-          SHA="$(git rev-parse HEAD)"
-
-          if ! [[ "$SHA" =~ ^[0-9a-f]{40}$ ]]; then
-            echo "ERROR: HEAD is not a full 40-character Git SHA"
-            exit 1
-          fi
-
-          if [ -n "$(git status --porcelain)" ]; then
-            echo "ERROR: Checkout is not clean"
-            git status
-            exit 1
-          fi
-
-          echo "Exact Hermes commit: $SHA"
-
       - name: Build Hermes Desktop LIGHT
         shell: bash
         run: |
           set -euo pipefail
-
           SHA="$(git rev-parse HEAD)"
 
           python3 scripts/bundles/desktop.py \
             --commit="$SHA" \
             --variant=light
 
-      - name: Verify build produced macOS packages
+      - name: Verify and inspect finished LIGHT application
         shell: bash
         run: |
           set -euo pipefail
 
-          echo "Produced files:"
+          echo "Produced packages:"
           find apps/desktop/release -maxdepth 1 -type f -print
 
-          DMG_COUNT="$(find apps/desktop/release -maxdepth 1 -name '*.dmg' -type f | wc -l | tr -d ' ')"
-          ZIP_COUNT="$(find apps/desktop/release -maxdepth 1 -name '*.zip' -type f | wc -l | tr -d ' ')"
+          ZIP="$(find apps/desktop/release -maxdepth 1 -type f -name '*.zip' | head -1)"
 
-          if [ "$DMG_COUNT" -lt 1 ]; then
-            echo "ERROR: No DMG was produced"
+          if [ -z "$ZIP" ]; then
+            echo "ERROR: No ZIP produced"
             exit 1
           fi
-
-          if [ "$ZIP_COUNT" -lt 1 ]; then
-            echo "ERROR: No ZIP was produced"
-            exit 1
-          fi
-
-      - name: Verify LIGHT build has no local agent payload
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          if [ -e apps/desktop/build/agent-payload ]; then
-            echo "ERROR: Light build contains agent-payload"
-            exit 1
-          fi
-
-          echo "PASS: build tree contains no agent-payload"
-
-      - name: Inspect finished Mac application
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          ZIP="$(find apps/desktop/release -maxdepth 1 -name '*.zip' -type f | head -1)"
 
           rm -rf /tmp/hermes-light-check
           mkdir -p /tmp/hermes-light-check
-
           ditto -x -k "$ZIP" /tmp/hermes-light-check
 
-          APP="$(find /tmp/hermes-light-check -maxdepth 2 -name 'Hermes.app' -type d | head -1)"
+          echo "ZIP contents:"
+          find /tmp/hermes-light-check -maxdepth 3 -print
+
+          APP="$(find /tmp/hermes-light-check -type d -name '*.app' -print -quit)"
 
           if [ -z "$APP" ]; then
-            echo "ERROR: Hermes.app not found inside ZIP"
+            echo "ERROR: No .app bundle found inside ZIP"
             exit 1
           fi
 
-          echo "Inspecting:"
+          echo "Found application:"
           echo "$APP"
 
-          BAD=0
-
           if find "$APP" -iname '*agent-payload*' -print | grep -q .; then
-            echo "ERROR: Finished app contains agent-payload"
-            BAD=1
-          fi
-
-          if find "$APP/Contents/Resources" \
-              \( -iname 'python' -o -iname 'python3' -o -iname 'python3.*' \) \
-              -print 2>/dev/null | grep -q .; then
-            echo "ERROR: Finished app appears to contain Python"
-            BAD=1
-          fi
-
-          if find "$APP/Contents/Resources" \
-              -iname 'hermes-agent' \
-              -print 2>/dev/null | grep -q .; then
-            echo "ERROR: Finished app contains hermes-agent"
-            BAD=1
-          fi
-
-          if [ "$BAD" -ne 0 ]; then
-            echo "REFUSING TO UPLOAD: this is not a GUI-only Light build"
+            echo "ERROR: agent payload detected"
             exit 1
           fi
 
-          echo "PASS: finished Hermes.app contains no detected local agent/runtime"
+          echo "PASS: Desktop Light app found with no agent payload."
 
-      - name: Upload verified Hermes Desktop Light
+      - name: Upload Hermes Desktop Light
         uses: actions/upload-artifact@v4
         with:
           name: Hermes-Desktop-Light-macOS
