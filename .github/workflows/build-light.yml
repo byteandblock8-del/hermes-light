@@ -170,6 +170,7 @@ jobs:
             --tn-skyline: .5;        /* side skyline silhouettes (0 = off)       */
             --tn-grid: .55;          /* floor grid at the bottom (0 = off)       */
             --tn-glow: 1;            /* multiplies every neon glow               */
+            --tn-lane: .82;          /* darkness of the reading lane behind text */
           }
           
           /* ── 1. Palette seeds. applyTheme() writes these inline on <html>, so
@@ -321,6 +322,16 @@ jobs:
               repeating-linear-gradient(0deg, rgba(255, 45, 170, .20) 0 1px, transparent 1px 28px);
             -webkit-mask-image: linear-gradient(180deg, transparent, rgba(0, 0, 0, .9));
             mask-image: linear-gradient(180deg, transparent, rgba(0, 0, 0, .9));
+          }
+          
+          /* Reading lane: a soft dark band under the conversation column so the
+             city/grid stay in the margins and never sit behind text. Lives on
+             aui_thread-content (the max-width column), so it covers bubbles,
+             plain reply text and tool/file cards alike. */
+          :root[data-hermes-theme="tokyo-neon"] [data-slot="aui_thread-content"] {
+            background: rgba(7, 10, 28, var(--tn-lane));
+            box-shadow: 0 0 56px 28px rgba(7, 10, 28, var(--tn-lane));
+            border-radius: 24px;
           }
           
           /* ── 3. Sidebar ──────────────────────────────────────────────────────── */
@@ -516,7 +527,7 @@ jobs:
                 style="color:light-dark(<light>, <dark>)"; the dark hexes below were
                 captured from a real Shiki render, so the matches are exact. ─────── */
           :root[data-hermes-theme="tokyo-neon"] :is([data-slot="code-card"], .aui-shiki) {
-            background: linear-gradient(145deg, rgba(8, 10, 34, .94), rgba(16, 9, 40, .92)) !important;
+            background: linear-gradient(145deg, rgba(8, 10, 34, .98), rgba(16, 9, 40, .97)) !important;
             border-color: rgba(132, 87, 255, .45) !important;
             box-shadow: var(--tn-neon-violet-soft) !important;
           }
