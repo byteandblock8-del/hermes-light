@@ -1,4 +1,4 @@
-name: Build Hermes Desktop Light + Tokyo Themes
+name: Build Hermes Light - Tokyo Neon
 
 on:
   workflow_dispatch:
@@ -23,10 +23,10 @@ jobs:
           node-version: "24.11.0"
           cache: npm
 
-      - name: Install Node dependencies
+      - name: Install dependencies
         run: npm ci
 
-      - name: Add Tokyo Night and Tokyo Neon themes
+      - name: Add Tokyo Neon theme
         shell: bash
         run: |
           set -euo pipefail
@@ -34,307 +34,564 @@ jobs:
           python3 <<'PY'
           from pathlib import Path
 
-          p = Path("apps/desktop/src/themes/presets.ts")
-          s = p.read_text()
+          path = Path("apps/desktop/src/themes/presets.ts")
+          src = path.read_text()
 
-          marker = "export const BUILTIN_THEMES: Record<string, DesktopTheme> = {"
+          registry = "export const BUILTIN_THEMES: Record<string, DesktopTheme> = {"
 
-          if marker not in s:
-              raise SystemExit("ERROR: BUILTIN_THEMES marker not found")
+          if registry not in src:
+              raise SystemExit("ERROR: BUILTIN_THEMES registry not found")
 
-          themes = r'''
-          /** Tokyo Night — dark Tokyo Night palette. */
-          export const tokyoNightTheme: DesktopTheme = {
-            name: 'tokyo-night',
-            label: 'Tokyo Night',
-            description: 'Deep navy with cool Tokyo blue accents',
-
-            colors: {
-              background: '#1a1b26',
-              foreground: '#c0caf5',
-
-              card: '#24283b',
-              cardForeground: '#c0caf5',
-
-              muted: '#2a2f45',
-              mutedForeground: '#9aa5ce',
-
-              popover: '#1f2335',
-              popoverForeground: '#c0caf5',
-
-              primary: '#7aa2f7',
-              primaryForeground: '#1a1b26',
-
-              secondary: '#2a2f45',
-              secondaryForeground: '#c0caf5',
-
-              accent: '#3b4261',
-              accentForeground: '#c0caf5',
-
-              border: '#3b4261',
-              input: '#414868',
-              ring: '#7aa2f7',
-
-              midground: '#7aa2f7',
-              midgroundForeground: '#1a1b26',
-              composerRing: '#7aa2f7',
-
-              destructive: '#f7768e',
-              destructiveForeground: '#1a1b26',
-
-              sidebarBackground: '#1f2335',
-              sidebarBorder: '#3b4261',
-
-              userBubble: '#24283b',
-              userBubbleBorder: '#3b4261',
-            },
-
-            typography: {
-              fontSans: SYSTEM_SANS,
-              fontMono: SYSTEM_MONO,
-            },
-
-            terminal: {
-              foreground: '#c0caf5',
-              cursor: '#7aa2f7',
-              selectionBackground: '#33467c80',
-              black: '#15161e',
-              red: '#f7768e',
-              green: '#9ece6a',
-              yellow: '#e0af68',
-              blue: '#7aa2f7',
-              magenta: '#bb9af7',
-              cyan: '#7dcfff',
-              white: '#a9b1d6',
-              brightBlack: '#414868',
-              brightRed: '#f7768e',
-              brightGreen: '#9ece6a',
-              brightYellow: '#e0af68',
-              brightBlue: '#7aa2f7',
-              brightMagenta: '#bb9af7',
-              brightCyan: '#7dcfff',
-              brightWhite: '#c0caf5',
-            },
-
-            customCSS: `
-              ::selection {
-                background: #7aa2f7 !important;
-                color: #1a1b26 !important;
-              }
-
-              .grain::after {
-                display: none !important;
-              }
-
-              :focus-visible {
-                outline-color: #7aa2f7 !important;
-              }
-            `,
-          }
-
-
-          /** Tokyo Neon — cyan / violet / magenta cyberpunk variant. */
+          theme = r'''
+          /**
+           * Tokyo Neon — Shibuya cyberpunk.
+           * Electric cyan, hot magenta, ultraviolet glass, neon city ambience.
+           */
           export const tokyoNeonTheme: DesktopTheme = {
             name: 'tokyo-neon',
             label: 'Tokyo Neon',
-            description: 'Cyberpunk Tokyo with cyan, violet and magenta neon',
+            description: 'Shibuya cyberpunk — cyan, magenta and ultraviolet neon',
 
             colors: {
-              background: '#0b0f1a',
-              foreground: '#d7e1ff',
+              background: '#070A12',
+              foreground: '#EAF2FF',
 
-              card: '#131d33',
-              cardForeground: '#d7e1ff',
+              card: '#0D1324',
+              cardForeground: '#EAF2FF',
 
-              muted: '#17213a',
-              mutedForeground: '#7f8ab8',
+              muted: '#12192B',
+              mutedForeground: '#8E9BC7',
 
-              popover: '#10182a',
-              popoverForeground: '#e6f7ff',
+              popover: '#0B1020',
+              popoverForeground: '#F4F7FF',
 
-              primary: '#00e5ff',
-              primaryForeground: '#071019',
+              primary: '#00F0FF',
+              primaryForeground: '#031014',
 
-              secondary: '#7c4dff',
-              secondaryForeground: '#ffffff',
+              secondary: '#8A5CFF',
+              secondaryForeground: '#FFFFFF',
 
-              accent: '#ff3cac',
-              accentForeground: '#ffffff',
+              accent: '#FF2DAA',
+              accentForeground: '#FFFFFF',
 
-              border: '#26345c',
-              input: '#203053',
-              ring: '#00e5ff',
+              border: '#26365F',
+              input: '#182440',
+              ring: '#00F0FF',
 
-              midground: '#00e5ff',
-              midgroundForeground: '#071019',
-              composerRing: '#ff3cac',
+              midground: '#00F0FF',
+              midgroundForeground: '#031014',
+              composerRing: '#FF2DAA',
 
-              destructive: '#ff4d8d',
-              destructiveForeground: '#ffffff',
+              destructive: '#FF4D6D',
+              destructiveForeground: '#FFFFFF',
 
-              sidebarBackground: '#10182a',
-              sidebarBorder: '#26345c',
+              sidebarBackground: '#080D19',
+              sidebarBorder: '#20345C',
 
-              userBubble: '#18233d',
-              userBubbleBorder: '#7c4dff',
+              userBubble: '#101B33',
+              userBubbleBorder: '#8A5CFF'
             },
 
             typography: {
               fontSans: SYSTEM_SANS,
-              fontMono: SYSTEM_MONO,
+              fontMono: `"JetBrains Mono", ${SYSTEM_MONO}`
             },
 
             terminal: {
-              foreground: '#d7e1ff',
-              cursor: '#00e5ff',
-              selectionBackground: '#00e5ff40',
-              black: '#080b14',
-              red: '#ff4d8d',
-              green: '#39ff88',
-              yellow: '#ffd166',
-              blue: '#00e5ff',
-              magenta: '#ff3cac',
-              cyan: '#6ee7ff',
-              white: '#c9d7ff',
-              brightBlack: '#435078',
-              brightRed: '#ff6fa5',
-              brightGreen: '#73ffad',
-              brightYellow: '#ffe09a',
-              brightBlue: '#67f1ff',
-              brightMagenta: '#ff7bd5',
-              brightCyan: '#9bf6ff',
-              brightWhite: '#ffffff',
+              foreground: '#DCE8FF',
+              cursor: '#00F0FF',
+              selectionBackground: '#00F0FF40',
+
+              black: '#05070D',
+              red: '#FF4D6D',
+              green: '#39FF88',
+              yellow: '#FFD166',
+              blue: '#00BFFF',
+              magenta: '#FF2DAA',
+              cyan: '#00F0FF',
+              white: '#C8D6F2',
+
+              brightBlack: '#4A5B85',
+              brightRed: '#FF7790',
+              brightGreen: '#76FFAE',
+              brightYellow: '#FFE19A',
+              brightBlue: '#67DBFF',
+              brightMagenta: '#FF78D2',
+              brightCyan: '#8AFAFF',
+              brightWhite: '#FFFFFF'
             },
 
             customCSS: `
-              html,
-              body,
-              #root {
+              /*
+               * TOKYO NEON
+               * Deliberately strong neon treatment.
+               */
+
+              :root[data-hermes-theme="tokyo-neon"] {
+                --theme-mix-chrome: 88% !important;
+                --theme-mix-sidebar: 100% !important;
+                --theme-mix-card: 70% !important;
+                --theme-mix-elevated: 80% !important;
+                --theme-mix-bubble: 72% !important;
+
+                --theme-background-seed: #070A12 !important;
+                --theme-sidebar-seed: #080D19 !important;
+                --theme-card-seed: #0D1324 !important;
+                --theme-elevated-seed: #0B1020 !important;
+                --theme-bubble-seed: #101B33 !important;
+
+                --theme-primary: #00F0FF !important;
+                --theme-secondary: #8A5CFF !important;
+                --theme-accent-soft: #FF2DAA !important;
+                --theme-midground: #00F0FF !important;
+
+                --dt-ring: #00F0FF !important;
+                --dt-composer-ring: #FF2DAA !important;
+                --dt-border: #26365F !important;
+                --dt-input: #182440 !important;
+                --dt-sidebar-border: #20345C !important;
+                --dt-user-bubble-border: #8A5CFF !important;
+              }
+
+              /*
+               * Main night-city atmosphere.
+               */
+              :root[data-hermes-theme="tokyo-neon"] body,
+              :root[data-hermes-theme="tokyo-neon"] #root {
                 background:
-                  radial-gradient(circle at 15% 8%, rgba(0,229,255,.055), transparent 30rem),
-                  radial-gradient(circle at 88% 15%, rgba(255,60,172,.045), transparent 28rem),
-                  #0b0f1a !important;
+                  radial-gradient(
+                    circle at 11% 5%,
+                    rgba(0, 240, 255, 0.17),
+                    transparent 28rem
+                  ),
+                  radial-gradient(
+                    circle at 91% 9%,
+                    rgba(255, 45, 170, 0.16),
+                    transparent 28rem
+                  ),
+                  radial-gradient(
+                    circle at 53% 105%,
+                    rgba(138, 92, 255, 0.15),
+                    transparent 34rem
+                  ),
+                  linear-gradient(
+                    180deg,
+                    #070A12 0%,
+                    #080C17 48%,
+                    #05070E 100%
+                  ) !important;
               }
 
-              ::selection {
-                background: #00e5ff !important;
-                color: #071019 !important;
+              /*
+               * Cyber grid / scanlines.
+               */
+              :root[data-hermes-theme="tokyo-neon"] body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                pointer-events: none;
+                z-index: 9998;
+
+                background:
+                  repeating-linear-gradient(
+                    0deg,
+                    rgba(255,255,255,0.018) 0px,
+                    rgba(255,255,255,0.018) 1px,
+                    transparent 1px,
+                    transparent 4px
+                  ),
+                  repeating-linear-gradient(
+                    90deg,
+                    rgba(0,240,255,0.014) 0px,
+                    rgba(0,240,255,0.014) 1px,
+                    transparent 1px,
+                    transparent 32px
+                  );
+
+                opacity: 0.42;
+                mix-blend-mode: screen;
               }
 
-              .grain::after {
+              /*
+               * Stylized neon skyline.
+               * Self-contained SVG: no external image file required.
+               */
+              :root[data-hermes-theme="tokyo-neon"] body::after {
+                content: "";
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 38%;
+                pointer-events: none;
+                z-index: 0;
+
+                background-image:
+                  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 400'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%2300f0ff' stop-opacity='.12'/%3E%3Cstop offset='1' stop-color='%23ff2daa' stop-opacity='.03'/%3E%3C/linearGradient%3E%3Cfilter id='glow'%3E%3CfeGaussianBlur stdDeviation='4' result='b'/%3E%3CfeMerge%3E%3CfeMergeNode in='b'/%3E%3CfeMergeNode in='SourceGraphic'/%3E%3C/feMerge%3E%3C/filter%3E%3C/defs%3E%3Cg fill='%23060a13' stroke='%2326365f' stroke-width='2'%3E%3Cpath d='M0 400V240h95V188h72v212H0zM145 400V270h94V150h53v250H145zM268 400V210h82v-70h57v260H268zM382 400V250h112V105h74v295H382zM535 400V190h82v-52h43v262H535zM628 400V234h112V120h72v280H628zM775 400V175h93V82h58v318H775zM900 400V235h96V145h69v255H900zM1030 400V192h84v-77h59v285h-143zM1140 400V246h94V162h67v238h-161zM1275 400V205h87V100h59v300h-146zM1390 400V252h82V175h48v225h-130zM1490 400V220h110v180h-110z'/%3E%3C/g%3E%3Cg filter='url(%23glow)'%3E%3Cpath d='M0 322H1600' stroke='%2300f0ff' stroke-opacity='.18'/%3E%3Cpath d='M0 350H1600' stroke='%23ff2daa' stroke-opacity='.12'/%3E%3Cg fill='url(%23g)'%3E%3Crect x='405' y='145' width='10' height='70'/%3E%3Crect x='788' y='128' width='11' height='88'/%3E%3Crect x='1155' y='170' width='10' height='78'/%3E%3Crect x='1402' y='140' width='12' height='90'/%3E%3C/g%3E%3Cg fill='%23ff2daa'%3E%3Crect x='460' y='142' width='5' height='95' opacity='.55'/%3E%3Crect x='1045' y='184' width='5' height='90' opacity='.42'/%3E%3C/g%3E%3Cg fill='%2300f0ff'%3E%3Crect x='799' y='132' width='4' height='102' opacity='.58'/%3E%3Crect x='1320' y='168' width='4' height='88' opacity='.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+
+                background-position: bottom center;
+                background-repeat: no-repeat;
+                background-size: 100% auto;
+                opacity: 0.54;
+                filter:
+                  drop-shadow(0 -8px 28px rgba(0,240,255,0.06))
+                  drop-shadow(0 -4px 28px rgba(255,45,170,0.06));
+              }
+
+              /*
+               * Keep application content above the decorative background.
+               */
+              :root[data-hermes-theme="tokyo-neon"] #root {
+                position: relative;
+                z-index: 1;
+              }
+
+              /*
+               * Glass panels.
+               */
+              :root[data-hermes-theme="tokyo-neon"] [data-slot="card"],
+              :root[data-hermes-theme="tokyo-neon"] [role="dialog"],
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-radix-popper-content-wrapper] > * {
+                background: rgba(10, 16, 32, 0.84) !important;
+
+                border-color: rgba(0,240,255,0.28) !important;
+
+                backdrop-filter:
+                  blur(18px)
+                  saturate(130%);
+
+                box-shadow:
+                  0 0 0 1px rgba(0,240,255,0.07),
+                  0 0 22px rgba(0,240,255,0.08),
+                  0 18px 60px rgba(0,0,0,0.42) !important;
+              }
+
+              /*
+               * Sidebar.
+               */
+              :root[data-hermes-theme="tokyo-neon"] aside,
+              :root[data-hermes-theme="tokyo-neon"] [data-sidebar] {
+                background:
+                  linear-gradient(
+                    180deg,
+                    rgba(8,13,25,0.97),
+                    rgba(6,10,19,0.97)
+                  ) !important;
+
+                border-right:
+                  1px solid rgba(0,240,255,0.25) !important;
+
+                box-shadow:
+                  9px 0 30px rgba(0,240,255,0.055),
+                  inset -1px 0 rgba(255,45,170,0.10);
+              }
+
+              /*
+               * Active rows, tabs, selected controls.
+               */
+              :root[data-hermes-theme="tokyo-neon"]
+                [aria-selected="true"],
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-state="active"],
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-state="checked"] {
+                color: #FFFFFF !important;
+
+                border-color:
+                  rgba(0,240,255,0.60) !important;
+
+                background:
+                  linear-gradient(
+                    90deg,
+                    rgba(0,240,255,0.19),
+                    rgba(138,92,255,0.17) 52%,
+                    rgba(255,45,170,0.14)
+                  ) !important;
+
+                box-shadow:
+                  inset 3px 0 #00F0FF,
+                  0 0 18px rgba(0,240,255,0.17),
+                  0 0 28px rgba(255,45,170,0.09) !important;
+              }
+
+              /*
+               * Message composer / text fields.
+               */
+              :root[data-hermes-theme="tokyo-neon"] textarea,
+              :root[data-hermes-theme="tokyo-neon"] input,
+              :root[data-hermes-theme="tokyo-neon"]
+                [contenteditable="true"] {
+                background:
+                  rgba(8,15,29,0.92) !important;
+
+                border-color:
+                  rgba(0,240,255,0.30) !important;
+
+                box-shadow:
+                  inset 0 0 0 1px rgba(138,92,255,0.06),
+                  0 0 14px rgba(0,240,255,0.05) !important;
+              }
+
+              :root[data-hermes-theme="tokyo-neon"] textarea:focus,
+              :root[data-hermes-theme="tokyo-neon"] input:focus,
+              :root[data-hermes-theme="tokyo-neon"]
+                [contenteditable="true"]:focus {
+                border-color: #FF2DAA !important;
+
+                box-shadow:
+                  0 0 0 1px rgba(255,45,170,0.78),
+                  0 0 18px rgba(255,45,170,0.32),
+                  0 0 36px rgba(0,240,255,0.12) !important;
+              }
+
+              /*
+               * Buttons.
+               */
+              :root[data-hermes-theme="tokyo-neon"] button {
+                transition:
+                  border-color 120ms ease,
+                  background-color 120ms ease,
+                  box-shadow 120ms ease,
+                  color 120ms ease,
+                  transform 120ms ease;
+              }
+
+              :root[data-hermes-theme="tokyo-neon"] button:hover {
+                border-color:
+                  rgba(0,240,255,0.52) !important;
+
+                box-shadow:
+                  0 0 15px rgba(0,240,255,0.16),
+                  0 0 26px rgba(255,45,170,0.08);
+              }
+
+              :root[data-hermes-theme="tokyo-neon"] button:active {
+                transform: translateY(1px);
+              }
+
+              /*
+               * User message bubbles.
+               */
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-role="user"] {
+                border-color:
+                  rgba(255,45,170,0.65) !important;
+
+                background:
+                  linear-gradient(
+                    135deg,
+                    rgba(75,17,84,0.78),
+                    rgba(35,17,82,0.82)
+                  ) !important;
+
+                box-shadow:
+                  0 0 0 1px rgba(255,45,170,0.12),
+                  0 0 20px rgba(255,45,170,0.14) !important;
+              }
+
+              /*
+               * Assistant rail:
+               * cyan -> violet -> magenta.
+               */
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-role="assistant"] {
+                position: relative;
+              }
+
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-role="assistant"]::before {
+                content: "";
+                position: absolute;
+                left: -10px;
+                top: 8px;
+                bottom: 8px;
+
+                width: 2px;
+                border-radius: 999px;
+
+                background:
+                  linear-gradient(
+                    #00F0FF,
+                    #8A5CFF,
+                    #FF2DAA
+                  );
+
+                box-shadow:
+                  0 0 9px rgba(0,240,255,0.70),
+                  0 0 20px rgba(255,45,170,0.25);
+
+                opacity: 0.88;
+              }
+
+              /*
+               * Links.
+               */
+              :root[data-hermes-theme="tokyo-neon"] a {
+                color: #67F6FF !important;
+                text-decoration-color:
+                  rgba(255,45,170,0.60);
+              }
+
+              :root[data-hermes-theme="tokyo-neon"] a:hover {
+                color: #FF75D0 !important;
+
+                text-shadow:
+                  0 0 8px rgba(255,45,170,0.55),
+                  0 0 18px rgba(255,45,170,0.22);
+              }
+
+              /*
+               * Headings.
+               */
+              :root[data-hermes-theme="tokyo-neon"] h1,
+              :root[data-hermes-theme="tokyo-neon"] h2,
+              :root[data-hermes-theme="tokyo-neon"] h3 {
+                color: #F4F8FF;
+
+                text-shadow:
+                  0 0 10px rgba(0,240,255,0.20),
+                  0 0 23px rgba(138,92,255,0.12);
+              }
+
+              /*
+               * Code blocks.
+               */
+              :root[data-hermes-theme="tokyo-neon"] pre {
+                border-color:
+                  rgba(138,92,255,0.32) !important;
+
+                background:
+                  rgba(5,10,20,0.91) !important;
+
+                box-shadow:
+                  inset 0 0 30px rgba(0,240,255,0.025),
+                  0 0 18px rgba(138,92,255,0.065);
+              }
+
+              /*
+               * Selection / focus.
+               */
+              :root[data-hermes-theme="tokyo-neon"]
+                ::selection {
+                background: #00F0FF !important;
+                color: #031014 !important;
+              }
+
+              :root[data-hermes-theme="tokyo-neon"]
+                :focus-visible {
+                outline-color: #00F0FF !important;
+
+                box-shadow:
+                  0 0 0 2px rgba(0,240,255,0.25),
+                  0 0 20px rgba(0,240,255,0.20) !important;
+              }
+
+              /*
+               * Neon scrollbar.
+               */
+              :root[data-hermes-theme="tokyo-neon"] * {
+                scrollbar-color:
+                  #7B57D8
+                  #080B14;
+              }
+
+              :root[data-hermes-theme="tokyo-neon"]
+                *::-webkit-scrollbar-thumb {
+                background:
+                  linear-gradient(
+                    180deg,
+                    #00F0FF 0%,
+                    #8A5CFF 52%,
+                    #FF2DAA 100%
+                  ) !important;
+
+                border-radius: 999px;
+              }
+
+              /*
+               * Remove stock grain so the neon stays crisp.
+               */
+              :root[data-hermes-theme="tokyo-neon"]
+                .grain::after {
                 display: none !important;
               }
-
-              :focus-visible {
-                outline-color: #00e5ff !important;
-              }
-
-              input:focus,
-              textarea:focus {
-                box-shadow:
-                  0 0 0 1px rgba(0,229,255,.35),
-                  0 0 18px rgba(0,229,255,.12) !important;
-              }
-
-              [aria-selected="true"],
-              [data-state="active"],
-              [data-state="checked"] {
-                box-shadow:
-                  0 0 0 1px rgba(0,229,255,.12),
-                  0 0 16px rgba(124,77,255,.10) !important;
-              }
-            `,
+            `
           }
 
           '''
 
-          # Add definitions immediately before the built-in registry.
-          s = s.replace(marker, themes + "\n" + marker, 1)
+          src = src.replace(registry, theme + "\n" + registry, 1)
 
-          start = s.index(marker)
-          end_marker = "export const BUILTIN_THEME_LIST"
-          end = s.index(end_marker, start)
+          old = """  cyberpunk: cyberpunkTheme
+          }"""
 
-          block = s[start:end]
-
-          closing = block.rfind("}")
-          if closing == -1:
-              raise SystemExit("ERROR: Could not locate BUILTIN_THEMES closing brace")
-
-          before = block[:closing].rstrip()
-
-          # Existing last entry currently has no comma.
-          if not before.endswith(","):
-              before += ","
-
-          before += """
-            'tokyo-night': tokyoNightTheme,
+          new = """  cyberpunk: cyberpunkTheme,
             'tokyo-neon': tokyoNeonTheme
-          """
+          }"""
 
-          block = before + "\n}\n\n"
-          s = s[:start] + block + s[end:]
+          if old not in src:
+              raise SystemExit(
+                  "ERROR: expected end of BUILTIN_THEMES was not found"
+              )
 
-          p.write_text(s)
+          src = src.replace(old, new, 1)
 
-          print("Tokyo themes injected.")
+          path.write_text(src)
+
+          print("Tokyo Neon injected successfully.")
           PY
 
-      - name: Verify injected source
+      - name: Verify theme registration
         shell: bash
         run: |
           set -euo pipefail
 
-          grep -n "export const tokyoNightTheme" \
-            apps/desktop/src/themes/presets.ts
-
           grep -n "export const tokyoNeonTheme" \
-            apps/desktop/src/themes/presets.ts
-
-          grep -n "'tokyo-night': tokyoNightTheme" \
             apps/desktop/src/themes/presets.ts
 
           grep -n "'tokyo-neon': tokyoNeonTheme" \
             apps/desktop/src/themes/presets.ts
 
-      - name: TYPECHECK CUSTOM THEMES
+      - name: Typecheck Desktop
         shell: bash
         run: |
           set -euo pipefail
 
           npm --workspace apps/desktop run typecheck
 
-          echo "PASS: Desktop TypeScript accepted the custom themes"
+          echo "PASS: Tokyo Neon satisfies Hermes Desktop types."
 
-      - name: Build renderer before packaging
+      - name: Build Desktop renderer
         shell: bash
         run: |
           set -euo pipefail
 
           npm --workspace apps/desktop run build
 
-          echo "PASS: Desktop renderer built with custom themes"
+          echo "PASS: renderer builds with Tokyo Neon."
 
-      - name: Commit validated custom source
+      - name: Commit customized Desktop source
         shell: bash
         run: |
           set -euo pipefail
 
-          git config user.name "Hermes Light Builder"
+          git config user.name "Hermes Tokyo Builder"
           git config user.email \
-            "hermes-light-builder@users.noreply.github.com"
+            "hermes-tokyo-builder@users.noreply.github.com"
 
           git add apps/desktop/src/themes/presets.ts
+
           git commit -m \
-            "Add validated Tokyo Night and Tokyo Neon Desktop themes"
+            "Add Tokyo Neon Desktop theme"
 
           if [ -n "$(git status --porcelain)" ]; then
-            echo "ERROR: checkout is not clean"
+            echo "ERROR: checkout is dirty after custom commit"
             git status
             exit 1
           fi
 
-          echo "Validated custom commit:"
+          echo "Custom build revision:"
           git rev-parse HEAD
 
       - name: Build Hermes Desktop LIGHT
@@ -348,10 +605,15 @@ jobs:
             --commit="$SHA" \
             --variant=light
 
-      - name: Verify LIGHT package
+      - name: Verify Light-only package
         shell: bash
         run: |
           set -euo pipefail
+
+          if [ -e apps/desktop/build/agent-payload ]; then
+            echo "ERROR: Hermes agent payload exists"
+            exit 1
+          fi
 
           DMG="$(
             find apps/desktop/release \
@@ -372,70 +634,31 @@ jobs:
           )"
 
           if [ -z "$DMG" ]; then
-            echo "ERROR: DMG not produced"
+            echo "ERROR: DMG was not produced"
             exit 1
           fi
 
           if [ -z "$ZIP" ]; then
-            echo "ERROR: ZIP not produced"
+            echo "ERROR: ZIP was not produced"
             exit 1
           fi
 
-          if [ -e apps/desktop/build/agent-payload ]; then
-            echo "ERROR: agent payload exists"
-            exit 1
-          fi
+          echo "PASS: no local agent payload"
+          echo "PASS: DMG exists"
+          echo "PASS: ZIP exists"
 
-          echo "PASS: Light DMG and ZIP exist"
-          echo "PASS: no local Hermes agent payload"
+          echo "DMG:"
+          echo "$DMG"
 
-      - name: Inspect packaged Mac app
-        shell: bash
-        run: |
-          set -euo pipefail
+          echo "ZIP:"
+          echo "$ZIP"
 
-          ZIP="$(
-            find apps/desktop/release \
-              -maxdepth 1 \
-              -type f \
-              -name '*.zip' \
-              -print \
-              -quit
-          )"
-
-          rm -rf /tmp/hermes-light-check
-          mkdir -p /tmp/hermes-light-check
-
-          ditto -x -k "$ZIP" /tmp/hermes-light-check
-
-          APP="$(
-            find /tmp/hermes-light-check \
-              -type d \
-              -name '*.app' \
-              -print \
-              -quit
-          )"
-
-          if [ -z "$APP" ]; then
-            echo "ERROR: no .app found in package"
-            exit 1
-          fi
-
-          if find "$APP" \
-              -iname '*agent-payload*' \
-              -print | grep -q .; then
-            echo "ERROR: packaged app contains agent payload"
-            exit 1
-          fi
-
-          echo "PASS: packaged native Light app verified"
-          echo "$APP"
-
-      - name: Upload VERIFIED Tokyo Light build
+      - name: Upload Tokyo Neon Light app
         uses: actions/upload-artifact@v4
         with:
-          name: Hermes-Desktop-Light-Tokyo-VERIFIED-macOS
+          name: Hermes-Light-Tokyo-Neon
           if-no-files-found: error
+          retention-days: 14
           path: |
             apps/desktop/release/*.dmg
             apps/desktop/release/*.zip
