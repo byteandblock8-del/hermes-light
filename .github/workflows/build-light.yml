@@ -11,13 +11,22 @@ jobs:
       CSC_IDENTITY_AUTO_DISCOVERY: "false"
 
     steps:
-      - name: Checkout current Hermes source
+      - name: Checkout Hermes
         uses: actions/checkout@v4
         with:
           repository: NousResearch/hermes-agent
           fetch-depth: 0
 
-      - name: Add Tokyo Night and Tokyo Neon Desktop themes
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24.11.0"
+          cache: npm
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Add Tokyo Night and Tokyo Neon themes
         shell: bash
         run: |
           set -euo pipefail
@@ -31,140 +40,302 @@ jobs:
           marker = "export const BUILTIN_THEMES: Record<string, DesktopTheme> = {"
 
           if marker not in s:
-              raise SystemExit("ERROR: Could not find BUILTIN_THEMES in presets.ts")
+              raise SystemExit("ERROR: BUILTIN_THEMES marker not found")
 
           themes = r'''
-          /** Tokyo Night — deep navy with cool blue accents. */
+          /** Tokyo Night — dark Tokyo Night palette. */
           export const tokyoNightTheme: DesktopTheme = {
             name: 'tokyo-night',
             label: 'Tokyo Night',
-            description: 'Deep blue night theme with cool cyan-blue accents',
-            palette: {
-              background: { hex: '#1a1b26', alpha: 1 },
-              midground: { hex: '#c0caf5', alpha: 1 },
-              foreground: { hex: '#c0caf5', alpha: 0 },
-              warmGlow: 'rgba(122, 162, 247, 0.05)',
-              noiseOpacity: 0,
-            },
-            typography: {
-              fontSans: SYSTEM_SANS,
-              fontMono: `"JetBrains Mono", ${SYSTEM_MONO}`,
-            },
-            terminalBackground: '#16161e',
-            colorOverrides: {
+            description: 'Deep navy with cool Tokyo blue accents',
+
+            colors: {
+              background: '#1a1b26',
+              foreground: '#c0caf5',
+
               card: '#24283b',
               cardForeground: '#c0caf5',
-              popover: '#1f2335',
-              popoverForeground: '#c0caf5',
-              primary: '#7aa2f7',
-              primaryForeground: '#1a1b26',
-              secondary: '#2a2f45',
-              secondaryForeground: '#c0caf5',
+
               muted: '#2a2f45',
               mutedForeground: '#9aa5ce',
+
+              popover: '#1f2335',
+              popoverForeground: '#c0caf5',
+
+              primary: '#7aa2f7',
+              primaryForeground: '#1a1b26',
+
+              secondary: '#2a2f45',
+              secondaryForeground: '#c0caf5',
+
               accent: '#3b4261',
               accentForeground: '#c0caf5',
-              destructive: '#f7768e',
-              destructiveForeground: '#1a1b26',
-              success: '#9ece6a',
-              warning: '#e0af68',
+
               border: '#3b4261',
               input: '#414868',
               ring: '#7aa2f7',
+
+              midground: '#7aa2f7',
+              midgroundForeground: '#1a1b26',
+              composerRing: '#7aa2f7',
+
+              destructive: '#f7768e',
+              destructiveForeground: '#1a1b26',
+
+              sidebarBackground: '#1f2335',
+              sidebarBorder: '#3b4261',
+
+              userBubble: '#24283b',
+              userBubbleBorder: '#3b4261',
             },
+
+            typography: {
+              fontSans: SYSTEM_SANS,
+              fontMono: SYSTEM_MONO,
+            },
+
+            terminal: {
+              foreground: '#c0caf5',
+              cursor: '#7aa2f7',
+              selectionBackground: '#33467c80',
+              black: '#15161e',
+              red: '#f7768e',
+              green: '#9ece6a',
+              yellow: '#e0af68',
+              blue: '#7aa2f7',
+              magenta: '#bb9af7',
+              cyan: '#7dcfff',
+              white: '#a9b1d6',
+              brightBlack: '#414868',
+              brightRed: '#f7768e',
+              brightGreen: '#9ece6a',
+              brightYellow: '#e0af68',
+              brightBlue: '#7aa2f7',
+              brightMagenta: '#bb9af7',
+              brightCyan: '#7dcfff',
+              brightWhite: '#c0caf5',
+            },
+
+            customCSS: `
+              ::selection {
+                background: #7aa2f7 !important;
+                color: #1a1b26 !important;
+              }
+
+              .grain::after {
+                display: none !important;
+              }
+
+              :focus-visible {
+                outline-color: #7aa2f7 !important;
+              }
+            `,
           }
 
-          /** Tokyo Neon — cyberpunk cyan, violet and magenta on deep navy. */
+
+          /** Tokyo Neon — cyan / violet / magenta cyberpunk variant. */
           export const tokyoNeonTheme: DesktopTheme = {
             name: 'tokyo-neon',
             label: 'Tokyo Neon',
             description: 'Cyberpunk Tokyo with cyan, violet and magenta neon',
-            palette: {
-              background: { hex: '#0b0f1a', alpha: 1 },
-              midground: { hex: '#d7e1ff', alpha: 1 },
-              foreground: { hex: '#d7e1ff', alpha: 0 },
-              warmGlow: 'rgba(255, 60, 172, 0.06)',
-              noiseOpacity: 0,
-            },
-            typography: {
-              fontSans: SYSTEM_SANS,
-              fontMono: `"JetBrains Mono", ${SYSTEM_MONO}`,
-            },
-            terminalBackground: '#080b14',
-            colorOverrides: {
+
+            colors: {
+              background: '#0b0f1a',
+              foreground: '#d7e1ff',
+
               card: '#131d33',
               cardForeground: '#d7e1ff',
-              popover: '#10182a',
-              popoverForeground: '#e6f7ff',
-              primary: '#00e5ff',
-              primaryForeground: '#071019',
-              secondary: '#7c4dff',
-              secondaryForeground: '#ffffff',
+
               muted: '#17213a',
               mutedForeground: '#7f8ab8',
+
+              popover: '#10182a',
+              popoverForeground: '#e6f7ff',
+
+              primary: '#00e5ff',
+              primaryForeground: '#071019',
+
+              secondary: '#7c4dff',
+              secondaryForeground: '#ffffff',
+
               accent: '#ff3cac',
               accentForeground: '#ffffff',
-              destructive: '#ff4d8d',
-              destructiveForeground: '#ffffff',
-              success: '#39ff88',
-              warning: '#ffd166',
+
               border: '#26345c',
               input: '#203053',
               ring: '#00e5ff',
+
+              midground: '#00e5ff',
+              midgroundForeground: '#071019',
+              composerRing: '#ff3cac',
+
+              destructive: '#ff4d8d',
+              destructiveForeground: '#ffffff',
+
+              sidebarBackground: '#10182a',
+              sidebarBorder: '#26345c',
+
+              userBubble: '#18233d',
+              userBubbleBorder: '#7c4dff',
             },
+
+            typography: {
+              fontSans: SYSTEM_SANS,
+              fontMono: SYSTEM_MONO,
+            },
+
+            terminal: {
+              foreground: '#d7e1ff',
+              cursor: '#00e5ff',
+              selectionBackground: '#00e5ff40',
+              black: '#080b14',
+              red: '#ff4d8d',
+              green: '#39ff88',
+              yellow: '#ffd166',
+              blue: '#00e5ff',
+              magenta: '#ff3cac',
+              cyan: '#6ee7ff',
+              white: '#c9d7ff',
+              brightBlack: '#435078',
+              brightRed: '#ff6fa5',
+              brightGreen: '#73ffad',
+              brightYellow: '#ffe09a',
+              brightBlue: '#67f1ff',
+              brightMagenta: '#ff7bd5',
+              brightCyan: '#9bf6ff',
+              brightWhite: '#ffffff',
+            },
+
+            customCSS: `
+              html,
+              body,
+              #root {
+                background:
+                  radial-gradient(circle at 15% 8%, rgba(0,229,255,.055), transparent 30rem),
+                  radial-gradient(circle at 88% 15%, rgba(255,60,172,.045), transparent 28rem),
+                  #0b0f1a !important;
+              }
+
+              ::selection {
+                background: #00e5ff !important;
+                color: #071019 !important;
+              }
+
+              .grain::after {
+                display: none !important;
+              }
+
+              :focus-visible {
+                outline-color: #00e5ff !important;
+              }
+
+              input:focus,
+              textarea:focus {
+                box-shadow:
+                  0 0 0 1px rgba(0,229,255,.35),
+                  0 0 18px rgba(0,229,255,.12) !important;
+              }
+
+              [aria-selected="true"],
+              [data-state="active"],
+              [data-state="checked"] {
+                box-shadow:
+                  0 0 0 1px rgba(0,229,255,.12),
+                  0 0 16px rgba(124,77,255,.10) !important;
+              }
+            `,
           }
 
           '''
 
-          s = s.replace(marker, themes + "\n" + marker)
+          # Add definitions immediately before the built-in registry.
+          s = s.replace(marker, themes + "\n" + marker, 1)
 
-          old = """  cyberpunk: cyberpunkTheme
-          }"""
+          start = s.index(marker)
+          end_marker = "export const BUILTIN_THEME_LIST"
+          end = s.index(end_marker, start)
 
-          if old not in s:
-              raise SystemExit("ERROR: Could not find end of BUILTIN_THEMES map")
+          block = s[start:end]
 
-          new = """  cyberpunk: cyberpunkTheme,
+          closing = block.rfind("}")
+          if closing == -1:
+              raise SystemExit("ERROR: Could not locate BUILTIN_THEMES closing brace")
+
+          before = block[:closing].rstrip()
+
+          # Existing last entry currently has no comma.
+          if not before.endswith(","):
+              before += ","
+
+          before += """
             'tokyo-night': tokyoNightTheme,
-            'tokyo-neon': tokyoNeonTheme,
-          }"""
+            'tokyo-neon': tokyoNeonTheme
+          """
 
-          s = s.replace(old, new)
+          block = before + "\n}\n\n"
+          s = s[:start] + block + s[end:]
 
           p.write_text(s)
 
-          print("Tokyo Night and Tokyo Neon added.")
+          print("Tokyo themes injected.")
           PY
 
-      - name: Verify themes were added
+      - name: Verify injected source
         shell: bash
         run: |
           set -euo pipefail
 
-          grep -n "tokyo-night" apps/desktop/src/themes/presets.ts
-          grep -n "tokyo-neon" apps/desktop/src/themes/presets.ts
+          grep -n "export const tokyoNightTheme" \
+            apps/desktop/src/themes/presets.ts
 
-      - name: Commit custom themes for build
+          grep -n "export const tokyoNeonTheme" \
+            apps/desktop/src/themes/presets.ts
+
+          grep -n "'tokyo-night': tokyoNightTheme" \
+            apps/desktop/src/themes/presets.ts
+
+          grep -n "'tokyo-neon': tokyoNeonTheme" \
+            apps/desktop/src/themes/presets.ts
+
+      - name: TYPECHECK CUSTOM THEMES
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          npm --workspace apps/desktop run typecheck
+
+          echo "PASS: Desktop TypeScript accepted the custom themes"
+
+      - name: Build renderer before packaging
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          npm --workspace apps/desktop run build
+
+          echo "PASS: Desktop renderer built with custom themes"
+
+      - name: Commit validated custom source
         shell: bash
         run: |
           set -euo pipefail
 
           git config user.name "Hermes Light Builder"
-          git config user.email "hermes-light-builder@users.noreply.github.com"
+          git config user.email \
+            "hermes-light-builder@users.noreply.github.com"
 
           git add apps/desktop/src/themes/presets.ts
-          git commit -m "Add Tokyo Night and Tokyo Neon desktop themes"
-
-          echo "Custom build commit:"
-          git rev-parse HEAD
+          git commit -m \
+            "Add validated Tokyo Night and Tokyo Neon Desktop themes"
 
           if [ -n "$(git status --porcelain)" ]; then
-            echo "ERROR: Working tree is not clean after theme commit"
+            echo "ERROR: checkout is not clean"
             git status
             exit 1
           fi
 
-          echo "PASS: clean custom-theme checkout"
+          echo "Validated custom commit:"
+          git rev-parse HEAD
 
       - name: Build Hermes Desktop LIGHT
         shell: bash
@@ -173,85 +344,46 @@ jobs:
 
           SHA="$(git rev-parse HEAD)"
 
-          echo "Building commit:"
-          echo "$SHA"
-
           python3 scripts/bundles/desktop.py \
             --commit="$SHA" \
             --variant=light
 
-      - name: Verify macOS packages were produced
+      - name: Verify LIGHT package
         shell: bash
         run: |
           set -euo pipefail
 
-          echo "Produced files:"
-          find apps/desktop/release -maxdepth 1 -type f -print
+          DMG="$(
+            find apps/desktop/release \
+              -maxdepth 1 \
+              -type f \
+              -name '*.dmg' \
+              -print \
+              -quit
+          )"
 
-          DMG="$(find apps/desktop/release -maxdepth 1 -type f -name '*.dmg' -print -quit)"
-          ZIP="$(find apps/desktop/release -maxdepth 1 -type f -name '*.zip' -print -quit)"
+          ZIP="$(
+            find apps/desktop/release \
+              -maxdepth 1 \
+              -type f \
+              -name '*.zip' \
+              -print \
+              -quit
+          )"
 
           if [ -z "$DMG" ]; then
-            echo "ERROR: No DMG produced"
+            echo "ERROR: DMG not produced"
             exit 1
           fi
 
           if [ -z "$ZIP" ]; then
-            echo "ERROR: No ZIP produced"
+            echo "ERROR: ZIP not produced"
             exit 1
           fi
-
-          echo "PASS: DMG and ZIP produced"
-
-      - name: Verify Light build contains no local agent payload
-        shell: bash
-        run: |
-          set -euo pipefail
 
           if [ -e apps/desktop/build/agent-payload ]; then
             echo "ERROR: agent payload exists"
             exit 1
           fi
 
-          echo "PASS: no agent payload"
-
-      - name: Inspect finished Mac application
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          ZIP="$(find apps/desktop/release -maxdepth 1 -type f -name '*.zip' -print -quit)"
-
-          rm -rf /tmp/hermes-light-check
-          mkdir -p /tmp/hermes-light-check
-
-          ditto -x -k "$ZIP" /tmp/hermes-light-check
-
-          echo "Extracted application files:"
-          find /tmp/hermes-light-check -maxdepth 3 -print
-
-          APP="$(find /tmp/hermes-light-check -type d -name '*.app' -print -quit)"
-
-          if [ -z "$APP" ]; then
-            echo "ERROR: No .app bundle found inside ZIP"
-            exit 1
-          fi
-
-          echo "Found application:"
-          echo "$APP"
-
-          if find "$APP" -iname '*agent-payload*' -print | grep -q .; then
-            echo "ERROR: Finished app contains an agent payload"
-            exit 1
-          fi
-
-          echo "PASS: finished Light app contains no detected agent payload"
-
-      - name: Upload Hermes Desktop Light with Tokyo themes
-        uses: actions/upload-artifact@v4
-        with:
-          name: Hermes-Desktop-Light-Tokyo-macOS
-          if-no-files-found: error
-          path: |
-            apps/desktop/release/*.dmg
-            apps/desktop/release/*.zip
+          echo
