@@ -386,4 +386,56 @@ jobs:
             exit 1
           fi
 
-          echo
+          echo "PASS: Light DMG and ZIP exist"
+          echo "PASS: no local Hermes agent payload"
+
+      - name: Inspect packaged Mac app
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ZIP="$(
+            find apps/desktop/release \
+              -maxdepth 1 \
+              -type f \
+              -name '*.zip' \
+              -print \
+              -quit
+          )"
+
+          rm -rf /tmp/hermes-light-check
+          mkdir -p /tmp/hermes-light-check
+
+          ditto -x -k "$ZIP" /tmp/hermes-light-check
+
+          APP="$(
+            find /tmp/hermes-light-check \
+              -type d \
+              -name '*.app' \
+              -print \
+              -quit
+          )"
+
+          if [ -z "$APP" ]; then
+            echo "ERROR: no .app found in package"
+            exit 1
+          fi
+
+          if find "$APP" \
+              -iname '*agent-payload*' \
+              -print | grep -q .; then
+            echo "ERROR: packaged app contains agent payload"
+            exit 1
+          fi
+
+          echo "PASS: packaged native Light app verified"
+          echo "$APP"
+
+      - name: Upload VERIFIED Tokyo Light build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Hermes-Desktop-Light-Tokyo-VERIFIED-macOS
+          if-no-files-found: error
+          path: |
+            apps/desktop/release/*.dmg
+            apps/desktop/release/*.zip
