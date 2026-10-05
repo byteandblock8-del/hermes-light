@@ -1,4 +1,4 @@
-name: Build Hermes Light - Tokyo Neon Final
+name: Build Hermes Light - Tokyo Neon Final Border Fix
 
 on:
   workflow_dispatch:
@@ -54,39 +54,28 @@ jobs:
             colors: {
               background: '#050812',
               foreground: '#EAF4FF',
-
               card: '#0B1326',
               cardForeground: '#EAF4FF',
-
               muted: '#101A31',
               mutedForeground: '#8798C8',
-
               popover: '#080F20',
               popoverForeground: '#F5F8FF',
-
               primary: '#00F0FF',
               primaryForeground: '#031014',
-
               secondary: '#8457FF',
               secondaryForeground: '#FFFFFF',
-
               accent: '#FF2DAA',
               accentForeground: '#FFFFFF',
-
               border: '#24436C',
               input: '#132744',
               ring: '#00F0FF',
-
               midground: '#00F0FF',
               midgroundForeground: '#031014',
               composerRing: '#FF2DAA',
-
               destructive: '#FF4E78',
               destructiveForeground: '#FFFFFF',
-
               sidebarBackground: '#060D1B',
               sidebarBorder: '#155375',
-
               userBubble: '#23113E',
               userBubbleBorder: '#FF2DAA'
             },
@@ -100,7 +89,6 @@ jobs:
               foreground: '#DCEAFF',
               cursor: '#00F0FF',
               selectionBackground: '#00F0FF38',
-
               black: '#03060C',
               red: '#FF4E78',
               green: '#39FF9A',
@@ -109,7 +97,6 @@ jobs:
               magenta: '#FF2DAA',
               cyan: '#00F0FF',
               white: '#CAD8F2',
-
               brightBlack: '#52658F',
               brightRed: '#FF7B9B',
               brightGreen: '#75FFBA',
@@ -121,18 +108,7 @@ jobs:
             },
 
             customCSS: `
-              /*
-               * ============================================================
-               * TOKYO NEON
-               * Targets the real Hermes Desktop DOM and real surface vars.
-               * ============================================================
-               */
-
               :root[data-hermes-theme="tokyo-neon"] {
-                /*
-                 * Stronger theme mixing than stock Hermes.
-                 * These are the variables Desktop itself uses.
-                 */
                 --theme-mix-chrome: 84% !important;
                 --theme-mix-sidebar: 88% !important;
                 --theme-mix-card: 58% !important;
@@ -143,75 +119,65 @@ jobs:
                 --theme-fill-secondary-accent-mix: 16% !important;
                 --theme-fill-tertiary-accent-mix: 12% !important;
 
-                --theme-stroke-primary-accent-mix: 42% !important;
-                --theme-stroke-secondary-accent-mix: 28% !important;
+                --theme-stroke-primary-accent-mix: 34% !important;
+                --theme-stroke-secondary-accent-mix: 22% !important;
 
                 --theme-row-hover-accent-mix: 15% !important;
                 --theme-row-active-accent-mix: 28% !important;
                 --theme-control-hover-accent-mix: 14% !important;
                 --theme-control-active-accent-mix: 24% !important;
 
-                /*
-                 * Real Hermes UI colors.
-                 */
                 --ui-cyan: #00F0FF !important;
                 --ui-blue: #19CFFF !important;
                 --ui-purple: #8457FF !important;
                 --ui-red: #FF2DAA !important;
                 --ui-green: #39FF9A !important;
 
-                /*
-                 * Make the real Hermes surfaces translucent enough for the
-                 * cyberpunk backdrop to show through.
-                 */
-                --ui-bg-chrome: rgba(4, 8, 18, 0.88) !important;
-                --ui-bg-sidebar: rgba(5, 12, 26, 0.87) !important;
-                --ui-bg-editor: rgba(7, 13, 27, 0.77) !important;
-                --ui-bg-elevated: rgba(9, 16, 34, 0.86) !important;
-                --ui-bg-card: rgba(12, 22, 43, 0.74) !important;
-                --ui-bg-input: rgba(5, 14, 30, 0.90) !important;
+                --ui-bg-chrome: rgba(4, 8, 18, 0.90) !important;
+                --ui-bg-sidebar: rgba(5, 12, 26, 0.90) !important;
+                --ui-bg-editor: rgba(7, 13, 27, 0.82) !important;
+                --ui-bg-elevated: rgba(9, 16, 34, 0.88) !important;
+                --ui-bg-card: rgba(12, 22, 43, 0.80) !important;
+                --ui-bg-input: rgba(5, 14, 30, 0.92) !important;
 
-                --sidebar-edge-border: rgba(0,240,255,0.48) !important;
+                --sidebar-edge-border: rgba(0,240,255,0.30) !important;
 
                 --composer-fill:
                   linear-gradient(
                     135deg,
-                    rgba(8,18,37,.95),
-                    rgba(18,10,43,.94)
+                    rgba(8,18,37,.96),
+                    rgba(18,10,43,.95)
                   ) !important;
 
                 --dt-border: #24436C !important;
                 --dt-input: #132744 !important;
                 --dt-ring: #00F0FF !important;
                 --dt-composer-ring: #FF2DAA !important;
-                --dt-sidebar-border: rgba(0,240,255,.38) !important;
+                --dt-sidebar-border: rgba(0,240,255,.28) !important;
                 --dt-user-bubble-border: #FF2DAA !important;
 
                 --noise-opacity-mul: 0 !important;
               }
 
-              /*
-               * Main ambient Tokyo night background.
-               */
               :root[data-hermes-theme="tokyo-neon"],
               :root[data-hermes-theme="tokyo-neon"] body,
               :root[data-hermes-theme="tokyo-neon"] #root {
                 background:
                   radial-gradient(
                     ellipse at 8% 4%,
-                    rgba(0,240,255,.22) 0%,
-                    rgba(0,240,255,.07) 22%,
+                    rgba(0,240,255,.20) 0%,
+                    rgba(0,240,255,.06) 22%,
                     transparent 46%
                   ),
                   radial-gradient(
                     ellipse at 92% 7%,
-                    rgba(255,45,170,.22) 0%,
-                    rgba(255,45,170,.07) 24%,
+                    rgba(255,45,170,.20) 0%,
+                    rgba(255,45,170,.06) 24%,
                     transparent 48%
                   ),
                   radial-gradient(
                     ellipse at 54% 96%,
-                    rgba(132,87,255,.19) 0%,
+                    rgba(132,87,255,.17) 0%,
                     transparent 48%
                   ),
                   linear-gradient(
@@ -222,148 +188,189 @@ jobs:
                   ) !important;
               }
 
-              /*
-               * Tokyo skyline.
-               * Pure embedded SVG — no remote image dependency.
-               */
-              :root[data-hermes-theme="tokyo-neon"] body::after {
-                content: "";
-                position: fixed;
-                pointer-events: none;
-                z-index: 0;
-
-                left: 0;
-                right: 0;
-                bottom: 0;
-
-                height: 46%;
-
-                background-image:
-                  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1800 520'%3E%3Cdefs%3E%3Cfilter id='c'%3E%3CfeGaussianBlur stdDeviation='5'/%3E%3C/filter%3E%3C/filter%3E%3C/defs%3E%3Cg fill='%23040912'%3E%3Cpath d='M0 520V330h80V270h55v250H0zm105 0V375h95V205h58v315H105zm180 0V300h72V180h72v340H285zm165 0V350h88V150h70v370H450zm185 0V285h105V205h66v315H635zm190 0V345h72V120h72v400H825zm160 0V265h100V190h65v330H985zm185 0V335h82V160h62v360h-144zm160 0V270h105V200h62v320h-167zm180 0V340h94V125h60v395h-154zm165 0V300h125v220h-125z'/%3E%3C/g%3E%3Cg fill='%2300f0ff' opacity='.46' filter='url(%23c)'%3E%3Crect x='190' y='245' width='4' height='88'/%3E%3Crect x='491' y='205' width='4' height='108'/%3E%3Crect x='861' y='172' width='4' height='125'/%3E%3Crect x='1392' y='230' width='4' height='120'/%3E%3C/g%3E%3Cg fill='%23ff2daa' opacity='.50' filter='url(%23c)'%3E%3Crect x='350' y='235' width='5' height='110'/%3E%3Crect x='1040' y='245' width='5' height='96'/%3E%3Crect x='1562' y='175' width='5' height='132'/%3E%3C/g%3E%3Cpath d='M0 416H1800' stroke='%2300f0ff' stroke-width='2' opacity='.16'/%3E%3Cpath d='M0 447H1800' stroke='%23ff2daa' stroke-width='2' opacity='.11'/%3E%3C/svg%3E");
-
-                background-size: 100% auto;
-                background-position: bottom center;
-                background-repeat: no-repeat;
-
-                opacity: .60;
-
-                filter:
-                  drop-shadow(0 -6px 22px rgba(0,240,255,.09))
-                  drop-shadow(0 -2px 26px rgba(255,45,170,.08));
-              }
-
-              /*
-               * Put actual Hermes UI over the skyline.
-               */
               :root[data-hermes-theme="tokyo-neon"] #root {
                 position: relative;
                 z-index: 1;
               }
 
-              /*
-               * Scanlines / grid atmosphere.
-               */
               :root[data-hermes-theme="tokyo-neon"] body::before {
                 content: "";
                 position: fixed;
                 inset: 0;
-
                 z-index: 9990;
                 pointer-events: none;
-
                 background:
                   repeating-linear-gradient(
                     0deg,
-                    rgba(255,255,255,.018) 0px,
-                    rgba(255,255,255,.018) 1px,
+                    rgba(255,255,255,.016) 0px,
+                    rgba(255,255,255,.016) 1px,
                     transparent 1px,
                     transparent 4px
                   ),
                   repeating-linear-gradient(
                     90deg,
-                    rgba(0,240,255,.012) 0px,
-                    rgba(0,240,255,.012) 1px,
+                    rgba(0,240,255,.010) 0px,
+                    rgba(0,240,255,.010) 1px,
                     transparent 1px,
                     transparent 36px
                   );
-
-                opacity: .40;
+                opacity: .32;
                 mix-blend-mode: screen;
               }
 
-              /*
-               * REAL SIDEBAR:
-               * current Desktop explicitly exposes data-tour=sessions-sidebar.
-               */
               :root[data-hermes-theme="tokyo-neon"]
                 [data-tour="sessions-sidebar"] {
                 background:
                   linear-gradient(
                     180deg,
-                    rgba(5,13,29,.91),
-                    rgba(3,8,18,.92)
+                    rgba(5,13,29,.94),
+                    rgba(3,8,18,.95)
                   ) !important;
-
                 border-right:
-                  1px solid rgba(0,240,255,.42) !important;
-
+                  1px solid rgba(0,240,255,.28) !important;
                 box-shadow:
-                  8px 0 28px rgba(0,240,255,.10),
-                  inset -1px 0 rgba(255,45,170,.12) !important;
-
+                  8px 0 28px rgba(0,240,255,.07),
+                  inset -1px 0 rgba(255,45,170,.08) !important;
                 backdrop-filter:
                   blur(20px)
                   saturate(138%);
               }
 
-              /*
-               * The actual sessions container already exposes this attribute.
-               */
+              /* User wrapper stays invisible. */
               :root[data-hermes-theme="tokyo-neon"]
-                [data-sessions-mode] {
+                [data-slot="aui_user-message-root"] {
+                border: 0 !important;
+                outline: 0 !important;
+                background: transparent !important;
+                box-shadow: none !important;
+              }
+
+              /* Pink border hugs the actual visible user bubble. */
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-slot="aui_user-message-root"]
+                .composer-human-message {
+                border:
+                  1px solid rgba(255,45,170,.72) !important;
+                background:
+                  linear-gradient(
+                    135deg,
+                    rgba(79,12,82,.74),
+                    rgba(36,15,83,.79)
+                  ) !important;
+                box-shadow:
+                  0 0 0 1px rgba(255,45,170,.08),
+                  0 0 18px rgba(255,45,170,.14) !important;
+              }
+
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-slot="aui_user-message-root"]
+                .composer-human-message:hover {
+                border-color:
+                  rgba(255,45,170,.90) !important;
+                box-shadow:
+                  0 0 0 1px rgba(255,45,170,.12),
+                  0 0 22px rgba(255,45,170,.20) !important;
+              }
+
+              /* Structural composer root stays invisible. */
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-slot="composer-root"] {
+                border: 0 !important;
+                outline: 0 !important;
+                background: transparent !important;
+                box-shadow: none !important;
+              }
+
+              /* Pink border hugs the actual composer surface. */
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-slot="composer-surface"] {
+                border:
+                  1px solid rgba(255,45,170,.74) !important;
+                background:
+                  linear-gradient(
+                    135deg,
+                    rgba(5,16,34,.96),
+                    rgba(22,8,45,.96)
+                  ) !important;
+                box-shadow:
+                  0 0 0 1px rgba(0,240,255,.10),
+                  0 0 18px rgba(255,45,170,.20),
+                  0 0 34px rgba(0,240,255,.07),
+                  0 16px 42px rgba(0,0,0,.36) !important;
+                backdrop-filter:
+                  blur(19px)
+                  saturate(145%);
+              }
+
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-slot="composer-root"]:focus-within
+                [data-slot="composer-surface"] {
+                border-color:
+                  #FF2DAA !important;
+                box-shadow:
+                  0 0 0 1px rgba(255,45,170,.72),
+                  0 0 22px rgba(255,45,170,.34),
+                  0 0 40px rgba(0,240,255,.11),
+                  0 18px 46px rgba(0,0,0,.40) !important;
+              }
+
+              /* No second cyan rectangle inside composer. */
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-slot="composer-surface"]
+                :is(input, textarea, [contenteditable="true"]) {
+                border-color: transparent !important;
+                box-shadow: none !important;
+                background: transparent !important;
+                outline: none !important;
+              }
+
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-slot="composer-surface"]
+                :is(input, textarea, [contenteditable="true"]):focus {
+                border-color: transparent !important;
+                box-shadow: none !important;
+                outline: none !important;
+              }
+
+              /* No giant cyan rectangle around assistant response. */
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-slot="aui_assistant-message-root"],
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-slot="aui_assistant-message-content"] {
+                border: 0 !important;
+                outline: 0 !important;
+                background: transparent !important;
+                box-shadow: none !important;
+              }
+
+              /* Thin neon assistant rail. */
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-slot="aui_assistant-message-content"] {
+                position: relative;
+              }
+
+              :root[data-hermes-theme="tokyo-neon"]
+                [data-slot="aui_assistant-message-content"]::before {
+                content: "";
+                position: absolute;
+                left: -4px;
+                top: .45rem;
+                bottom: .45rem;
+                width: 2px;
+                border-radius: 999px;
                 background:
                   linear-gradient(
                     180deg,
-                    rgba(4,12,27,.18),
-                    rgba(12,5,25,.10)
+                    #00F0FF 0%,
+                    #8457FF 52%,
+                    #FF2DAA 100%
                   );
-              }
-
-              /*
-               * Real sidebar navigation rows.
-               */
-              :root[data-hermes-theme="tokyo-neon"]
-                [data-tour="sessions-sidebar"] button {
-                border:
-                  1px solid transparent;
-
-                transition:
-                  background 130ms ease,
-                  border-color 130ms ease,
-                  box-shadow 130ms ease,
-                  color 130ms ease;
-              }
-
-              :root[data-hermes-theme="tokyo-neon"]
-                [data-tour="sessions-sidebar"] button:hover {
-                background:
-                  linear-gradient(
-                    90deg,
-                    rgba(0,240,255,.13),
-                    rgba(132,87,255,.11),
-                    rgba(255,45,170,.09)
-                  ) !important;
-
-                border-color:
-                  rgba(0,240,255,.28) !important;
-
                 box-shadow:
-                  0 0 14px rgba(0,240,255,.08);
+                  0 0 8px rgba(0,240,255,.58),
+                  0 0 15px rgba(255,45,170,.18);
+                opacity: .78;
               }
 
-              /*
-               * Selected / active controls across Hermes.
-               */
               :root[data-hermes-theme="tokyo-neon"]
                 :is(
                   [aria-selected="true"],
@@ -373,120 +380,19 @@ jobs:
                   [data-state="checked"]
                 ) {
                 border-color:
-                  rgba(0,240,255,.62) !important;
-
+                  rgba(0,240,255,.48) !important;
                 background:
                   linear-gradient(
                     90deg,
-                    rgba(0,240,255,.19),
-                    rgba(132,87,255,.19) 53%,
-                    rgba(255,45,170,.15)
+                    rgba(0,240,255,.16),
+                    rgba(132,87,255,.16) 53%,
+                    rgba(255,45,170,.12)
                   ) !important;
-
                 box-shadow:
-                  inset 3px 0 #00F0FF,
-                  0 0 16px rgba(0,240,255,.18),
-                  0 0 26px rgba(255,45,170,.11) !important;
+                  inset 2px 0 #00F0FF,
+                  0 0 12px rgba(0,240,255,.12) !important;
               }
 
-              /*
-               * REAL COMPOSER ROOT.
-               */
-              :root[data-hermes-theme="tokyo-neon"]
-                [data-slot="composer-root"] {
-                border:
-                  1px solid rgba(255,45,170,.76) !important;
-
-                background:
-                  linear-gradient(
-                    135deg,
-                    rgba(5,16,34,.95),
-                    rgba(22,8,45,.95)
-                  ) !important;
-
-                box-shadow:
-                  0 0 0 1px rgba(0,240,255,.18),
-                  0 0 18px rgba(255,45,170,.30),
-                  0 0 36px rgba(0,240,255,.11),
-                  0 18px 46px rgba(0,0,0,.40) !important;
-
-                backdrop-filter:
-                  blur(19px)
-                  saturate(145%);
-              }
-
-              :root[data-hermes-theme="tokyo-neon"]
-                [data-slot="composer-root"]:focus-within {
-                border-color:
-                  #FF2DAA !important;
-
-                box-shadow:
-                  0 0 0 1px rgba(255,45,170,.78),
-                  0 0 22px rgba(255,45,170,.42),
-                  0 0 42px rgba(0,240,255,.16),
-                  0 20px 48px rgba(0,0,0,.44) !important;
-              }
-
-              /*
-               * Assistant UI message content.
-               * Hermes' own stylesheet uses these data-slot hooks.
-               */
-              :root[data-hermes-theme="tokyo-neon"]
-                [data-slot="aui_assistant-message-content"] {
-                position: relative;
-
-                margin-block: .45rem;
-                padding: .9rem 1rem;
-
-                background:
-                  linear-gradient(
-                    135deg,
-                    rgba(4,22,38,.78),
-                    rgba(12,15,40,.76)
-                  ) !important;
-
-                border:
-                  1px solid rgba(0,240,255,.38);
-
-                border-radius:
-                  14px;
-
-                box-shadow:
-                  0 0 0 1px rgba(0,240,255,.06),
-                  0 0 20px rgba(0,240,255,.10),
-                  inset 2px 0 rgba(0,240,255,.72);
-              }
-
-              /*
-               * User bubble fallbacks.
-               * Handles assistant-ui slot naming plus Hermes bubble border vars.
-               */
-              :root[data-hermes-theme="tokyo-neon"]
-                :is(
-                  [data-slot="aui_user-message-content"],
-                  [data-role="user"]
-                ) {
-                background:
-                  linear-gradient(
-                    135deg,
-                    rgba(91,11,87,.72),
-                    rgba(46,14,90,.76)
-                  ) !important;
-
-                border:
-                  1px solid rgba(255,45,170,.66) !important;
-
-                border-radius:
-                  14px;
-
-                box-shadow:
-                  0 0 0 1px rgba(255,45,170,.09),
-                  0 0 22px rgba(255,45,170,.18) !important;
-              }
-
-              /*
-               * Cards, code, tool output.
-               */
               :root[data-hermes-theme="tokyo-neon"]
                 :is(
                   [data-slot="card"],
@@ -496,46 +402,16 @@ jobs:
                 background:
                   linear-gradient(
                     145deg,
-                    rgba(5,14,30,.90),
-                    rgba(12,12,38,.86)
+                    rgba(5,14,30,.91),
+                    rgba(12,12,38,.88)
                   ) !important;
-
                 border-color:
-                  rgba(132,87,255,.40) !important;
-
+                  rgba(132,87,255,.28) !important;
                 box-shadow:
-                  inset 0 0 24px rgba(0,240,255,.025),
-                  0 0 18px rgba(132,87,255,.08) !important;
+                  inset 0 0 22px rgba(0,240,255,.018),
+                  0 0 14px rgba(132,87,255,.055) !important;
               }
 
-              /*
-               * Popovers / dialogs.
-               */
-              :root[data-hermes-theme="tokyo-neon"]
-                :is(
-                  [role="dialog"],
-                  [role="menu"],
-                  [role="listbox"]
-                ) {
-                background:
-                  rgba(7,14,31,.92) !important;
-
-                border-color:
-                  rgba(0,240,255,.35) !important;
-
-                box-shadow:
-                  0 0 0 1px rgba(0,240,255,.07),
-                  0 0 28px rgba(0,240,255,.10),
-                  0 18px 60px rgba(0,0,0,.50) !important;
-
-                backdrop-filter:
-                  blur(22px)
-                  saturate(145%);
-              }
-
-              /*
-               * Inputs and search boxes.
-               */
               :root[data-hermes-theme="tokyo-neon"]
                 :is(
                   input,
@@ -543,10 +419,9 @@ jobs:
                   [contenteditable="true"]
                 ) {
                 background:
-                  rgba(4,14,30,.82) !important;
-
+                  rgba(4,14,30,.84);
                 border-color:
-                  rgba(0,240,255,.28) !important;
+                  rgba(0,240,255,.24);
               }
 
               :root[data-hermes-theme="tokyo-neon"]
@@ -556,68 +431,61 @@ jobs:
                   [contenteditable="true"]
                 ):focus {
                 border-color:
-                  #00F0FF !important;
-
+                  #00F0FF;
                 box-shadow:
-                  0 0 0 1px rgba(0,240,255,.55),
-                  0 0 17px rgba(0,240,255,.22) !important;
+                  0 0 0 1px rgba(0,240,255,.40),
+                  0 0 14px rgba(0,240,255,.16);
               }
 
-              /*
-               * Headings and links.
-               */
+              :root[data-hermes-theme="tokyo-neon"]
+                :is(
+                  [role="dialog"],
+                  [role="menu"],
+                  [role="listbox"]
+                ) {
+                background:
+                  rgba(7,14,31,.94) !important;
+                border:
+                  1px solid rgba(0,240,255,.22) !important;
+                box-shadow:
+                  0 0 0 1px rgba(0,240,255,.04),
+                  0 0 24px rgba(0,240,255,.07),
+                  0 18px 60px rgba(0,0,0,.46) !important;
+                backdrop-filter:
+                  blur(22px)
+                  saturate(145%);
+              }
+
               :root[data-hermes-theme="tokyo-neon"]
                 :is(h1,h2,h3) {
-                color:
-                  #F4F9FF;
-
+                color: #F4F9FF;
                 text-shadow:
-                  0 0 9px rgba(0,240,255,.24),
-                  0 0 20px rgba(132,87,255,.15);
+                  0 0 9px rgba(0,240,255,.20),
+                  0 0 20px rgba(132,87,255,.12);
               }
 
               :root[data-hermes-theme="tokyo-neon"] a {
-                color:
-                  #64F6FF !important;
+                color: #64F6FF !important;
               }
 
               :root[data-hermes-theme="tokyo-neon"] a:hover {
-                color:
-                  #FF72D1 !important;
-
+                color: #FF72D1 !important;
                 text-shadow:
-                  0 0 9px rgba(255,45,170,.50),
-                  0 0 20px rgba(255,45,170,.20);
+                  0 0 9px rgba(255,45,170,.44),
+                  0 0 20px rgba(255,45,170,.16);
               }
 
-              /*
-               * Focus glow.
-               */
-              :root[data-hermes-theme="tokyo-neon"]
-                :focus-visible {
-                outline-color:
-                  #00F0FF !important;
-
-                box-shadow:
-                  0 0 0 2px rgba(0,240,255,.24),
-                  0 0 19px rgba(0,240,255,.18) !important;
-              }
-
-              /*
-               * Selection.
-               */
               :root[data-hermes-theme="tokyo-neon"]
                 ::selection {
-                background:
-                  #00F0FF !important;
-
-                color:
-                  #031014 !important;
+                background: #00F0FF !important;
+                color: #031014 !important;
               }
 
-              /*
-               * Neon scrollbar.
-               */
+              :root[data-hermes-theme="tokyo-neon"]
+                :focus-visible {
+                outline-color: #00F0FF !important;
+              }
+
               :root[data-hermes-theme="tokyo-neon"] * {
                 scrollbar-color:
                   #7957E8
@@ -633,18 +501,12 @@ jobs:
                     #8457FF 52%,
                     #FF2DAA 100%
                   ) !important;
-
-                border-radius:
-                  999px;
+                border-radius: 999px;
               }
 
-              /*
-               * Disable Hermes grain over the cyberpunk treatment.
-               */
               :root[data-hermes-theme="tokyo-neon"]
                 .grain::after {
-                display:
-                  none !important;
+                display: none !important;
               }
             `
           }
@@ -681,10 +543,10 @@ jobs:
 
           path.write_text(src)
 
-          print("Tokyo Neon injected.")
+          print("Tokyo Neon border-aligned theme injected.")
           PY
 
-      - name: Verify source mutation
+      - name: Verify theme registration
         shell: bash
         run: |
           set -euo pipefail
@@ -694,17 +556,6 @@ jobs:
 
           grep -n "'tokyo-neon': tokyoNeonTheme" \
             apps/desktop/src/themes/presets.ts
-
-          grep -n 'data-tour="sessions-sidebar"' \
-            apps/desktop/src/app/chat/sidebar/index.tsx
-
-          grep -R -n 'data-slot=.composer-root' \
-            apps/desktop/src \
-            | head -10 || true
-
-          grep -R -n 'aui_assistant-message-content' \
-            apps/desktop/src \
-            | head -10 || true
 
       - name: Typecheck Desktop
         shell: bash
@@ -729,17 +580,14 @@ jobs:
         run: |
           set -euo pipefail
 
-          git config user.name \
-            "Hermes Tokyo Builder"
-
+          git config user.name "Hermes Tokyo Builder"
           git config user.email \
             "hermes-tokyo-builder@users.noreply.github.com"
 
-          git add \
-            apps/desktop/src/themes/presets.ts
+          git add apps/desktop/src/themes/presets.ts
 
           git commit \
-            -m "Add Tokyo Neon cyberpunk Desktop theme"
+            -m "Add border-aligned Tokyo Neon Desktop theme"
 
           if [ -n "$(git status --porcelain)" ]; then
             echo "ERROR: checkout dirty after custom commit"
@@ -761,7 +609,7 @@ jobs:
             --commit="$SHA" \
             --variant=light
 
-      - name: Verify Light package
+      - name: Verify Light-only package
         shell: bash
         run: |
           set -euo pipefail
@@ -796,10 +644,10 @@ jobs:
           echo "$DMG"
           echo "$ZIP"
 
-      - name: Upload Tokyo Neon Light build
+      - name: Upload fixed Tokyo Neon build
         uses: actions/upload-artifact@v4
         with:
-          name: Hermes-Light-Tokyo-Neon-FINAL
+          name: Hermes-Light-Tokyo-Neon-BORDER-FIX
           if-no-files-found: error
           retention-days: 14
           path: |
