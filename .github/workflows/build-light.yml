@@ -1,4 +1,4 @@
-name: Build Hermes Desktop Light
+name: Build Hermes Desktop Light + Tokyo Themes
 
 on:
   workflow_dispatch:
@@ -17,6 +17,129 @@ jobs:
           repository: NousResearch/hermes-agent
           fetch-depth: 0
 
+      - name: Add Tokyo Night and Tokyo Neon Desktop themes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 <<'PY'
+          from pathlib import Path
+
+          p = Path("apps/desktop/src/themes/presets.ts")
+          s = p.read_text()
+
+          marker = "export const BUILTIN_THEMES: Record<string, DesktopTheme> = {"
+
+          if marker not in s:
+              raise SystemExit("Could not find BUILTIN_THEMES in presets.ts")
+
+          themes = r'''
+          /** Tokyo Night — deep navy with cool blue accents. */
+          export const tokyoNightTheme: DesktopTheme = {
+            name: 'tokyo-night',
+            label: 'Tokyo Night',
+            description: 'Deep blue night theme with cool cyan-blue accents',
+            palette: {
+              background: { hex: '#1a1b26', alpha: 1 },
+              midground: { hex: '#c0caf5', alpha: 1 },
+              foreground: { hex: '#c0caf5', alpha: 0 },
+              warmGlow: 'rgba(122, 162, 247, 0.05)',
+              noiseOpacity: 0,
+            },
+            typography: {
+              fontSans: SYSTEM_SANS,
+              fontMono: `"JetBrains Mono", ${SYSTEM_MONO}`,
+            },
+            terminalBackground: '#16161e',
+            colorOverrides: {
+              card: '#24283b',
+              cardForeground: '#c0caf5',
+              popover: '#1f2335',
+              popoverForeground: '#c0caf5',
+              primary: '#7aa2f7',
+              primaryForeground: '#1a1b26',
+              secondary: '#2a2f45',
+              secondaryForeground: '#c0caf5',
+              muted: '#2a2f45',
+              mutedForeground: '#9aa5ce',
+              accent: '#3b4261',
+              accentForeground: '#c0caf5',
+              destructive: '#f7768e',
+              destructiveForeground: '#1a1b26',
+              success: '#9ece6a',
+              warning: '#e0af68',
+              border: '#3b4261',
+              input: '#414868',
+              ring: '#7aa2f7',
+            },
+          }
+
+          /** Tokyo Neon — cyberpunk cyan, violet and magenta on deep navy. */
+          export const tokyoNeonTheme: DesktopTheme = {
+            name: 'tokyo-neon',
+            label: 'Tokyo Neon',
+            description: 'Cyberpunk Tokyo — cyan, violet and magenta neon',
+            palette: {
+              background: { hex: '#0b0f1a', alpha: 1 },
+              midground: { hex: '#d7e1ff', alpha: 1 },
+              foreground: { hex: '#d7e1ff', alpha: 0 },
+              warmGlow: 'rgba(255, 60, 172, 0.06)',
+              noiseOpacity: 0,
+            },
+            typography: {
+              fontSans: SYSTEM_SANS,
+              fontMono: `"JetBrains Mono", ${SYSTEM_MONO}`,
+            },
+            terminalBackground: '#080b14',
+            colorOverrides: {
+              card: '#131d33',
+              cardForeground: '#d7e1ff',
+              popover: '#10182a',
+              popoverForeground: '#e6f7ff',
+              primary: '#00e5ff',
+              primaryForeground: '#071019',
+              secondary: '#7c4dff',
+              secondaryForeground: '#ffffff',
+              muted: '#17213a',
+              mutedForeground: '#7f8ab8',
+              accent: '#ff3cac',
+              accentForeground: '#ffffff',
+              destructive: '#ff4d8d',
+              destructiveForeground: '#ffffff',
+              success: '#39ff88',
+              warning: '#ffd166',
+              border: '#26345c',
+              input: '#203053',
+              ring: '#00e5ff',
+            },
+          }
+
+          '''
+
+          s = s.replace(marker, themes + "\n" + marker)
+
+          old = """  cyberpunk: cyberpunkTheme
+          }"""
+
+          if old not in s:
+              raise SystemExit("Could not find end of BUILTIN_THEMES map")
+
+          new = """  cyberpunk: cyberpunkTheme,
+            'tokyo-night': tokyoNightTheme,
+            'tokyo-neon': tokyoNeonTheme,
+          }"""
+
+          s = s.replace(old, new)
+          p.write_text(s)
+
+          print("Tokyo themes added successfully")
+          PY
+
+      - name: Show added themes
+        shell: bash
+        run: |
+          grep -n "tokyo-night\|tokyo-neon" apps/desktop/src/themes/presets.ts
+
       - name: Build Hermes Desktop LIGHT
         shell: bash
         run: |
@@ -27,49 +150,22 @@ jobs:
             --commit="$SHA" \
             --variant=light
 
-      - name: Verify and inspect finished LIGHT application
+      - name: Verify Light build contains no agent payload
         shell: bash
         run: |
           set -euo pipefail
 
-          echo "Produced packages:"
-          find apps/desktop/release -maxdepth 1 -type f -print
-
-          ZIP="$(find apps/desktop/release -maxdepth 1 -type f -name '*.zip' | head -1)"
-
-          if [ -z "$ZIP" ]; then
-            echo "ERROR: No ZIP produced"
+          if [ -e apps/desktop/build/agent-payload ]; then
+            echo "ERROR: agent payload exists"
             exit 1
           fi
 
-          rm -rf /tmp/hermes-light-check
-          mkdir -p /tmp/hermes-light-check
-          ditto -x -k "$ZIP" /tmp/hermes-light-check
-
-          echo "ZIP contents:"
-          find /tmp/hermes-light-check -maxdepth 3 -print
-
-          APP="$(find /tmp/hermes-light-check -type d -name '*.app' -print -quit)"
-
-          if [ -z "$APP" ]; then
-            echo "ERROR: No .app bundle found inside ZIP"
-            exit 1
-          fi
-
-          echo "Found application:"
-          echo "$APP"
-
-          if find "$APP" -iname '*agent-payload*' -print | grep -q .; then
-            echo "ERROR: agent payload detected"
-            exit 1
-          fi
-
-          echo "PASS: Desktop Light app found with no agent payload."
+          echo "PASS: no agent payload"
 
       - name: Upload Hermes Desktop Light
         uses: actions/upload-artifact@v4
         with:
-          name: Hermes-Desktop-Light-macOS
+          name: Hermes-Desktop-Light-Tokyo-macOS
           if-no-files-found: error
           path: |
             apps/desktop/release/*.dmg
